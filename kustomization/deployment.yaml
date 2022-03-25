@@ -29,35 +29,20 @@ spec:
         - env:
           - name: INGRESS_HOST
           - name: PROTOCOLS
-          - name: STT_APIKEY
-            valueFrom:
-              secretKeyRef: 
-                name: stt-apikey
-                key: STT_APIKEY
-          - name: STT_URL
-            valueFrom:
-              configMapKeyRef: 
-                name: stt-config
-                key: STT_URL
-          - name: LOG_LEVEL
-            valueFrom:
-              configMapKeyRef: 
-                name: stt-config
-                key: LOG_LEVEL
           image: jp.icr.io/showcase/cloud-native-developer
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:
               path: /
-              port: 3000
+              port: 8000
               scheme: HTTP
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
           name: api-service
           ports:
-            - containerPort: 3000
+            - containerPort: 8000
               name: http
               protocol: TCP
           readinessProbe:

@@ -19,6 +19,8 @@ spec:
       params:
         - name: url
           value: https://github.com/shimac-jp/fastapi-petstore.git
+        - name: revision 
+          value: ft/k8s
       taskRef:
         kind: Task
         name: git-clone

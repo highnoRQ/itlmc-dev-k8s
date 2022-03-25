@@ -3,7 +3,7 @@ kind: PipelineRun
 metadata:
   generateName: api-service-pipeline-run-
 spec:
-  serviceAccountName: build-bot
+  serviceAccountName: itlmc-build-bot
   pipelineRef:
     name: api-service-pipeline
   workspaces:
