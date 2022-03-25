@@ -1,0 +1,65 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  annotations:
+    app.openshift.io/runtime: nodejs
+  name: api-service-pipeline
+spec:
+  workspaces:
+    - name: pipeline-shared-data
+      description: |
+        This workspace stores the cloned repository and is available to all steps
+  params:
+    - name: image-repo
+      type: string
+      description: Docker image name
+      default: jp.icr.io/showcase/cloud-native-developer
+  tasks:
+    - name: clone-repository
+      params:
+        - name: url
+          value: https://github.com/shimac-jp/fastapi-petstore.git
+      taskRef:
+        kind: Task
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: pipeline-shared-data
+    - name: build-image
+      runAfter:
+        - clone-repository
+      taskRef:
+        kind: Task
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      params:
+        - name: IMAGE
+          value: "$(params.image-repo):$(tasks.clone-repository.results.commit)"
+    - name: kustomize-build
+      runAfter:
+        - build-image
+      taskRef:
+        kind: Task
+        name: kustomize-build
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      params:
+        - name: image-with-tag
+          value: "jp.icr.io/showcase/cloud-native-developer=$(params.image-repo):$(tasks.clone-repository.results.commit)"
+    - name: container-deploy
+      runAfter:
+        - kustomize-build
+      taskRef:
+        kind: Task
+        name: container-deploy
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      params:
+        - name: app-namespace
+          value: itlmc-dev
+        - name: app-name
+          value: api-service
