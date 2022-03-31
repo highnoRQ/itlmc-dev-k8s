@@ -1,0 +1,18 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: itlmc-triggertemplate
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: api-service-pipeline-run-
+      spec:
+        serviceAccountName: itlmc-build-bot
+        pipelineRef:
+          name: api-service-pipeline
+        workspaces:
+          - name: pipeline-shared-data
+            persistentVolumeClaim:
+              claimName: api-server-pvc
