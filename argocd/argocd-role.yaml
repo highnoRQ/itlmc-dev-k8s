@@ -1,27 +1,31 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: builder-argo
+  namespace: itlmc-dev
 rules:
   - apiGroups:
       - "*"
     resources:
       - "*"
     verbs:
-      - Get
-      - List
-      - Watch
-      - Patch
+      - get
+      - list
+      - watch
+      - patch
+      - create
+      - update
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: builder-argo
+  namespace: itlmc-dev
 subjects:
   - kind: ServiceAccount
-    name: argocd-operator-controller-manager
-    namespace: openshift-operators
+    name: openshift-gitops-argocd-application-controller
+    namespace: openshift-gitops
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: builder-argo
