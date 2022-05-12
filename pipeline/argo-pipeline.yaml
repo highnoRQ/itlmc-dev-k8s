@@ -13,7 +13,7 @@ spec:
     - name: image-repo
       type: string
       description: Docker image name
-      default: quay.io/repository/yukihiro_azuma1_ibm/cloud-native-developer
+      default: quay.io/yukihiro_azuma1_ibm/cloud-native-developer
   tasks:
     - name: clone-repository
       params:

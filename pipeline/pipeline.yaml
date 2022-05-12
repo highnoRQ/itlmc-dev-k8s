@@ -13,7 +13,7 @@ spec:
     - name: image-repo
       type: string
       description: Docker image name
-      default: jp.icr.io/showcase/cloud-native-developer
+      default: quay.io/yukihiro_azuma1_ibm/cloud-native-developer
   tasks:
     - name: clone-repository
       params:
@@ -50,7 +50,7 @@ spec:
           workspace: pipeline-shared-data
       params:
         - name: image-with-tag
-          value: "quay.io/repository/yukihiro_azuma1_ibm/cloud-native-developer=$(params.image-repo):$(tasks.clone-repository.results.commit)"
+          value: "quay.io/yukihiro_azuma1_ibm/cloud-native-developer=$(params.image-repo):$(tasks.clone-repository.results.commit)"
     - name: container-deploy
       runAfter:
         - kustomize-build
