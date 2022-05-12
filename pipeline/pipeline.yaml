@@ -50,7 +50,7 @@ spec:
           workspace: pipeline-shared-data
       params:
         - name: image-with-tag
-          value: "jp.icr.io/showcase/cloud-native-developer=$(params.image-repo):$(tasks.clone-repository.results.commit)"
+          value: "quay.io/repository/yukihiro_azuma1_ibm/cloud-native-developer=$(params.image-repo):$(tasks.clone-repository.results.commit)"
     - name: container-deploy
       runAfter:
         - kustomize-build
