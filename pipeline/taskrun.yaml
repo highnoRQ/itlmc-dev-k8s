@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: pytest
+spec:
+  taskRef:
+    name: pytest
+  workspaces:
+  - name: source
+    persistentVolumeClaim:
+      claimName: my-source
+  params:
+  - name: PYTHON
+    value: "3.7"
+  - name: ARGS
+    value: "-rfs"

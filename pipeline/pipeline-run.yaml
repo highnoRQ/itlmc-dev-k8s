@@ -1,11 +1,11 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: api-service-pipeline-run-
+  generateName: api-service-dev-pipeline-run-
 spec:
   serviceAccountName: itlmc-build-bot
   pipelineRef:
-    name: api-service-pipeline
+    name: api-service-dev-pipeline
   workspaces:
     - name: pipeline-shared-data
       persistentVolumeClaim:

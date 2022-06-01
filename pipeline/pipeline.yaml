@@ -3,7 +3,7 @@ kind: Pipeline
 metadata:
   annotations:
     app.openshift.io/runtime: nodejs
-  name: api-service-pipeline
+  name: api-service-dev-pipeline
 spec:
   workspaces:
     - name: pipeline-shared-data
@@ -20,16 +20,30 @@ spec:
         - name: url
           value: https://github.com/shimac-jp/fastapi-petstore.git
         - name: revision
-          value: master
+          value: main
       taskRef:
         kind: Task
         name: git-clone
       workspaces:
         - name: output
           workspace: pipeline-shared-data
+    - name: python-test
+      runAfter: 
+        - clone-repository
+      taskRef:
+        kind: Task
+        name: pytest
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      params:
+        - name: PYTHON
+          value: "3.8.5"
+        - name: SOURCE_PATH
+          value: "./app"
     - name: build-image
       runAfter:
-        - clone-repository
+        - python-test
       taskRef:
         kind: Task
         name: buildah
@@ -64,4 +78,4 @@ spec:
         - name: app-namespace
           value: itlmc-dev
         - name: app-name
-          value: api-service
+          value: api-service-dev
